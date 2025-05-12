@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+        <title>Rifiuto proposta</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS -->
+        <link rel="stylesheet" href="style/default.css" type="text/css">
+        <link rel="stylesheet" href="style/utilities.css" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    </head>
+    <body>
+        <!-- Header -->
+        <div id="header">
+            <div class="w3-center">
+                <h1 class="webmarket"><span class="web">Web</span><span class="market">Market</span></h1>
+                <p class="slogan">Il tuo shopping, la tua richiesta</p>
+            </div>
+            <div class="w3-bar w3-blue w3-large">
+                <a href="richieste.html" class="w3-bar-item w3-button w3-mobile menu-item">
+                    Richieste
+                </a>
+                <a href="proposte.html" class="w3-bar-item w3-button w3-mobile menu-item">
+                    Proposte
+                </a>
+                <a onclick="logout()" class="w3-bar-item w3-button w3-mobile menu-logoutitem">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </div>
+        </div>
+            
+        <!-- Body -->
+        <div class="w3-container" id="body">
+            <ul class="breadcrumb">
+                <li><a href="proposte.html"><i class="fa fa-home w3-margin-left"></i> Proposte ricevute</a></li>
+                <li class="separator"><i class="fa fa-angle-right"></i></li>
+                <li id="currentpage" class="currentpage_bc">Rifiuto proposta #</li>
+            </ul>
+            
+            <h1 class="w3-center form-title">Motiva il rifiuto</h1>
+            <div class="form-container">
+                <form method="POST">
+                    <div class="w3-row-padding">
+                        <textarea class="w3-input w3-border input-form" id="motivazione" name="motivazione" maxlength="200" placeholder="Scrivi la motivazione" required></textarea>
+                        <button id="rifiutaButton" class="w3-button w3-blue w3-border w3-round mainformbutton" type="button">Conferma</button>
+                        <button class="w3-button w3-blue w3-border w3-round mainformbutton" onclick="location.href='proposte.html'">Annulla</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="w3-container" id="footer">
+            <div class="w3-center">
+                Contatti: service@webmarket.com 
+            </div>
+        </div>
+        <script src="scripts/rifiuto_proposta.js"></script>
+        <script src="scripts/utilities.js"></script>
+    </body>
+</html>

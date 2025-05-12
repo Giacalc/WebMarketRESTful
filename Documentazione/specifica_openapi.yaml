@@ -1,0 +1,808 @@
+openapi: 3.0.3
+info:
+  title: Specifica WebMarketServices
+  description: >
+    **Gruppo di lavoro:**
+      - **Simone Rabottini**
+        - **Matricola:** 281113
+        - **Email:** simone.rabottini@student.univaq.it 
+      - **Giacomo Calcaterra**
+        - **Matricola:** 279494
+        - **Email:** giacomo.calcaterra@student.univaq.it 
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://localhost:8080/WMServices_GS
+  
+tags:
+  - name: Richiesta
+    description: Operazioni riguardanti una richiesta
+  - name: Richieste
+    description: Operazioni riguardanti l'insieme delle richieste
+  - name: Proposta
+    description: Operazioni riguardanti una proposta
+  - name: Proposte
+    description:  Operazioni riguardanti l'insieme delle proposte
+  - name: Autenticazione
+    description: Operazioni riguardanti l'autenticazione al sistema
+paths:
+  /rest/richieste/{id}:
+    #getRichiesta
+    get:
+      operationId: getRichiesta 
+      description: >-
+        Vengono restituiti i dettagli di una richiesta avente l'ID indicato
+      tags:
+        - Richiesta
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '200':
+          description: Dettagli della richiesta menzionata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Richiesta'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_Element' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    #deleteRichiesta
+    delete:
+      operationId: deleteRichiesta
+      description: >-
+        Cancellazione dal sistema di una richiesta avente l'ID indicato
+      tags:
+        - Richiesta
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '204':
+          description: Richiesta eliminata con successo
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_List' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/richieste/{id}/incarico_richiesta:
+    #inCaricoRichiesta
+    patch:
+      operationId: inCaricoRichiesta
+      description: >-
+        Il tecnico indicato prenderà in carico la richiesta avente l'ID indicato
+      tags:
+        - Richiesta
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+        - $ref: '#/components/parameters/tecID'
+      responses:
+        '204':
+          description: Richiesta presa in carico con successo
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_List' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/richieste:
+    #getRichieste
+    get:
+      operationId: getRichieste 
+      description: >-
+        Vengono restituite tutte le richieste dell'ordinante indicato, comprese quelle concluse
+      tags:
+        - Richieste
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ordID'
+      responses:
+        '200':
+          description: Lista di richieste dell'ordinante
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List_Richiesta'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_List' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    #insertRichiesta
+    post:
+      operationId: insertRichiesta
+      description: >-
+        Inserimento di una richiesta nel sistema
+      tags:
+        - Richieste
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Richiesta'
+            example:
+              note: "Note richiesta di esempio specifica OpenAPI"
+              categoria: "Notebook"
+              caratteristiche:
+                OS: "MacOS"
+                CPU: "Apple M3"
+                RAM: "8GB"
+                Schermo: "13 pollici"
+              ordinante:
+                username: "simone"
+      responses:
+        '201':
+          $ref: '#/components/responses/Insert_Success'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/richieste/in_corso:
+    #getRichiesteInCorso
+    get:
+      operationId: getRichiesteInCorso 
+      description: >-
+        Vengono restituite tutte le richieste in corso dell'ordinante indicato
+      tags:
+        - Richieste
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ordID'
+      responses:
+        '200':
+          description: Lista di richieste in corso dell'ordinante indicato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List_Richiesta'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized'
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/richieste/non_in_carico:
+    #getRichiesteDaPrendereInCarico
+    get:
+      operationId: getRichiesteDaPrendereInCarico 
+      description: >-
+        Vengono restuite tutte le richieste non ancora prese in carico da nessun tecnico
+      tags:
+        - Richieste
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista di richieste non in carico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List_Richiesta'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_Element' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/richieste/in_carico:
+    #getRichiesteInCarico
+    get:
+      operationId: getRichiesteInCarico 
+      description: >-
+        Vengono restituite tutte le richieste prese in carico dal tecnico indicato
+      tags:
+        - Richieste
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/tecID'
+      responses:
+        '200':
+          description: Lista di richieste in carico del tecnico indicato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List_Richiesta'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_Element' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  
+  /rest/proposte/{id}:
+    #getProposta
+    get:
+      operationId: getProposta 
+      description: >-
+        Vengono restituiti i dettagli di una proposta avente l'ID indicato
+      tags:
+        - Proposta
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '200':
+          description: Dettagli della proposta menzionata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proposta'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_Element' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    #updateProposta 
+    put:
+      operationId: updateProposta 
+      description: >-
+        Modifica di una proposta avente l'ID indicato da parte di un tecnico. L'operazione avviene solo se il tecnico che ha effettuato l'accesso corrisponde al tecnico che ha effettuato la proposta
+      tags:
+        - Proposta
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proposta'
+            example:
+              stato: "In attesa"
+              note: "Note proposta di esempio specifica OpenAPI"
+              prodotto:
+                codice: "ABCD01234"
+                nome_produttore: "Amazon"
+                nome: "Fire TV Stick 4K"
+                prezzo: "29.99"
+                url: "www.amazon.com"
+              richiesta:
+                ID: "1"
+              tecnico:
+                username: "tecnico"
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '204':
+          description: Proposta aggiornata con successo
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'    
+          
+  /rest/proposte/{id}/accetta:
+    #accettaProposta
+    patch:
+      operationId: accettaProposta
+      description: >-
+        Accettazione di una proposta avente l'ID indicato da parte di un ordinante. L'operazione avviene solo se l'ordinante che ha effettuato l'accesso corrisponde al destinatario della proposta
+      tags:
+        - Proposta
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '204':
+          description: Proposta accettata con successo
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_List' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+          
+  /rest/proposte/{id}/rifiuta:
+    #rifiutaProposta
+    patch:
+      operationId: rifiutaProposta
+      description: >-
+        Rifiuto di una proposta avente l'ID indicato da parte di un ordinante, indicando la motivazione. L'operazione avviene solo se l'ordinante che ha effettuato l'accesso corrisponde al destinatario della proposta
+      tags:
+        - Proposta
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                motivazione:
+                  type: string
+      parameters:
+        - $ref: '#/components/parameters/pathID'
+      responses:
+        '204':
+          description: Proposta rifiutata con successo
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '404':
+          $ref: '#/components/responses/Error_NotFound_List' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    
+  /rest/proposte:
+    #getProposte
+    get:
+      operationId: getProposte 
+      description: >-
+        Vengono restituite tutte le proposte ricevute dall'ordinante indicato
+      tags:
+        - Proposte
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ordID'
+      responses:
+        '200':
+          description: Lista di proposte ricevute
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List_Proposta'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    #insertProposta
+    post:
+      operationId: insertProposta
+      description: >-
+        Inserimento di una proposta da parte di un tecnico. L'operazione avviene solo se il tecnico che ha effettuato l'accesso corrisponde al tecnico incaricato della richiesta associata
+      tags:
+        - Proposte
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proposta'
+            example:
+              note: "Note proposta di esempio specifica OpenAPI"
+              prodotto:
+                codice: "SCZD78OSK"
+                nome_produttore: "Apple"
+                nome: "MacBook Air M4"
+                prezzo: "1199.99"
+                url: "www.apple.com"
+              tecnico:
+                username: "tecnico"
+              richiesta:
+                ID: "7"
+      responses:
+        '201':
+          $ref: '#/components/responses/Insert_Success'
+        '400':
+          $ref: '#/components/responses/Error_BadRequest'
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    
+          
+  /rest/auth/login:
+    post:
+      operationId: login
+      description: >-
+        Login dell'utente al sistema
+      tags:
+        - Autenticazione
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login eseguito con successo
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: "Token di autenticazione"
+                example: "abcdef12345"
+          headers:
+            Authorization:
+              schema:
+                type: string
+                description: "Token per l'accesso alle risorse protette da autenticazione."
+                example: "Bearer abcdef12345"
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  /rest/auth/logout:
+    delete:
+      operationId: logout
+      description: >-
+        Logout dell'utente in sessione
+      tags:
+        - Autenticazione
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Logout eseguito con successo
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+  /rest/auth/refresh:
+    get:
+      operationId: refresh
+      description: >-
+        Refresh del token di autorizzazione
+      tags:
+        - Autenticazione
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token aggiornato
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: "Token di autenticazione"
+                example: "abcdef12345"
+          headers:
+            Authorization:
+              schema:
+                type: string
+                description: "Token per l'accesso alle risorse protette da autenticazione."
+                example: "Bearer abcdef12345"
+        '401':
+          $ref: '#/components/responses/Error_Unauthorized' 
+        '500':
+          $ref: '#/components/responses/Error_Internal'
+    
+    
+components:    
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: internalToken
+  responses:
+    Insert_Success:
+      description: Inserimento dell'elemento avvenuto con successo
+      headers:
+        location:
+          schema:
+           type: string
+           format: uri
+    Error_BadRequest:
+      description: Richiesta al server non effettuata correttamente
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Operazione non andata a buon fine
+    Error_Internal:
+      description: Errore interno del server
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Errore durante l'operazione
+    Error_Unauthorized:
+      description: Bearer token di autenticazione mancante o non valido
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Operazione non autorizzata
+    Error_NotFound_Element:
+     description: Elemento richiesto inesistente
+     content:
+        text/plain:
+          schema:
+            type: string
+            example: Non è presente alcun elemento nella lista
+    Error_NotFound_List:
+     description: Nessun elemento presente nella lista restituita
+     content:
+        text/plain:
+          schema:
+            type: string
+            example: L'elemento è inesistente
+  parameters:
+    ordID:
+      name: ID_Ordinante
+      in: query
+      description: "ID di un ordinante del sistema"
+      required: true
+      schema:
+        type: string
+    tecID:
+      name: ID_Tecnico
+      in: query
+      description: "ID di un tecnico del sistema"
+      required: true
+      schema:
+        type: string
+    pathID:
+      name: id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+  schemas:
+    #parametri
+    id:
+      type: integer
+      pattern: "[0-9]+"
+      example: "1"
+    
+    #Models
+    Utente_Ordinante:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "giacomo"
+        nome:
+          type: string
+          example: "Giacomo"
+        cognome:
+          type: string
+          example: "Calcaterra"
+        email:
+          type: string
+          format: e-mail
+          example: "giacomo@gmail.com"
+        ruolo:
+          type: string
+          example: "Ordinante"
+      required:
+        - username
+      additionalProperties: false
+      
+    Utente_Tecnico:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "tecnico"
+        nome:
+          type: string
+          example: "Tecnico"
+        cognome:
+          type: string
+          example: "Principale"
+        email:
+          type: string
+          format: e-mail
+          example: "tecnico@webmarket.com"
+        ruolo:
+          type: string
+          example: "Tecnico"
+      required:
+        - username
+      additionalProperties: false
+      
+    Prodotto:
+      type: object
+      properties:
+        codice:
+          type: string
+          example: "ABCD01234"
+        nome_produttore:
+          type: string
+          example: "Amazon"
+        nome:
+          type: string
+          example: "Fire TV Stick 4K"
+        prezzo:
+          type: number
+          example: 29.99
+        url:
+          type: string
+          example: "www.amazon.com"
+      
+      
+    #Richiesta
+    Richiesta:
+      type: object
+      properties:
+        ID:
+          $ref: '#/components/schemas/id'
+        data:
+          type: string
+          format: date
+        stato:
+          enum:
+            - "Da prendere in carico"
+            - "Presa in carico"
+            - "In attesa"
+            - "Completata"
+          example: "In attesa"
+        note:
+          type: string
+          example: "Note richiesta"
+        categoria:
+          type: string
+          example: "Categoria di riferimento"
+        caratteristiche:
+          type: object
+          properties:
+            nome_caratteristica:
+              type: string
+              example: valore_caratteristica
+        ordinante:
+          $ref: '#/components/schemas/Utente_Ordinante'
+        tecnico_incarico:
+          $ref: '#/components/schemas/Utente_Tecnico'
+        proposta:
+          $ref: '#/components/schemas/Proposta_Richiesta'
+      required:
+        - categoria
+        - caratteristiche
+        - ordinante
+      additionalProperties: false
+        
+    Richiesta_Proposta:
+      type: object
+      properties:
+        ID:
+          $ref: '#/components/schemas/id'
+        data:
+          type: string
+          format: date
+        stato:
+          enum:
+            - "Da prendere in carico"
+            - "Presa in carico"
+            - "In attesa"
+            - "Completata"
+          example: "In attesa"
+        note:
+          type: string
+          example: "Note richiesta"
+        categoria:
+          type: string
+          example: "Categoria di riferimento"
+        caratteristiche:
+          type: object
+          properties:
+            nome_caratteristica:
+              type: string
+              example: valore_caratteristica
+        ordinante:
+          $ref: '#/components/schemas/Utente_Ordinante'
+      required:
+        - ID
+      additionalProperties: false
+    
+    #Richieste
+    List_Richiesta:
+      type: object
+      properties:
+        richieste:
+          type: array
+          items:
+            $ref: '#/components/schemas/Richiesta'
+      additionalProperties: false
+    
+    #Proposta
+    Proposta:
+      type: object
+      properties:
+        ID:
+          $ref: '#/components/schemas/id'
+        data:
+          type: string
+          format: date
+        stato:
+          enum:
+            - "In attesa"
+            - "Accettata"
+            - "Rifiutata"
+            - "Conclusa: Rifiutata"
+            - "Conclusa"
+          example: "In attesa"
+        motivazione:
+          type: string
+          example: "Eventuale motivazione rifiuto"
+        note:
+          type: string
+          example: "Note proposta"
+        prodotto:
+          $ref: '#/components/schemas/Prodotto'
+        tecnico:
+          $ref: '#/components/schemas/Utente_Tecnico'
+        richiesta:
+          $ref: '#/components/schemas/Richiesta_Proposta'
+      required:
+        - prodotto
+        - tecnico
+        - richiesta
+      additionalProperties: false
+    
+    Proposta_Richiesta:
+      type: object
+      properties:
+        ID:
+          $ref: '#/components/schemas/id'
+        data:
+          type: string
+          format: date
+        stato:
+          enum:
+            - "In attesa"
+            - "Accettata"
+            - "Rifiutata"
+            - "Conclusa: Rifiutata"
+            - "Conclusa"
+          example: "In attesa"
+        motivazione:
+          type: string
+          example: "Eventuale motivazione rifiuto"
+        note:
+          type: string
+          example: "Note proposta"
+        prodotto:
+          $ref: '#/components/schemas/Prodotto'
+      required:
+        - ID
+      additionalProperties: false
+    
+    #Proposte
+    List_Proposta:
+      type: object
+      properties:
+        proposte:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proposta'
+      additionalProperties: false
+      

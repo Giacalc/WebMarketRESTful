@@ -1,0 +1,22 @@
+{
+    "data": "2025-12-11",
+    "stato": "Conclusa",
+    "prodotto": {
+        "codice": "0wewrf21",
+        "nome": "Canotta Jason",
+        "nome_produttore": "Jordasdn",
+        "prezzo": 128.99,
+        "url": "www.j2wordan.com"
+    },
+    "note": "Nota modifica",
+    "tecnico": {
+        "username": "tecnico",
+        "email": "tecnico@gmail.com",
+        "nome": "Tecnico",
+        "cognome": "Principale",
+        "ruolo": "Tecnico"
+    }
+    "richiesta": {
+        "ID": 55
+    }
+}

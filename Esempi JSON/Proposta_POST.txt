@@ -1,0 +1,23 @@
+{
+    "data": "2025-01-15",
+    "stato": "In attesa",
+    "prodotto": {
+        "codice": "SCZD78OSK",
+        "nome_produttore": "Apple",
+        "nome": "Macbook Air M4",
+        "prezzo": 1199.99,
+        "url": "www.apple.com"
+    },
+    "note": "Nota postman",
+    "tecnico": {
+        "username": "tecnico",
+        "email": "tecnico@gmail.com",
+        "nome": "Tecnico",
+        "cognome": "Principale",
+        "ruolo": "Tecnico"
+    },
+    "richiesta": {
+        "ID": 61,
+        "stato": "Presa in carico"
+    }
+}

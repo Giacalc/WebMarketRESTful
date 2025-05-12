@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+        <title>Proposte attive</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS -->
+        <link rel="stylesheet" href="style/default.css" type="text/css">
+        <link rel="stylesheet" href="style/utilities.css" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    </head>
+    <body>
+        <!-- Header -->
+        <div id="header">
+            <div class="w3-center">
+                <h1 class="webmarket"><span class="web">Web</span><span class="market">Market</span></h1>
+                <p class="slogan">Il tuo shopping, la tua richiesta</p>
+            </div>
+            <div class="w3-bar w3-blue w3-large w3-margin-bottom">
+                <a href="richieste.html" class="w3-bar-item w3-button w3-mobile menu-item">
+                    Richieste
+                </a>
+                <a href="proposte.html" class="w3-bar-item w3-button w3-mobile menu-item">
+                    Proposte
+                </a>
+                <a onclick="logout()" class="w3-bar-item w3-button w3-mobile menu-logoutitem">
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </div>
+        </div>
+            
+        <!-- Body -->
+        <div class="w3-container" id="body">
+            
+            <h1 class="w3-center list-items-title">Proposte ricevute</h1>
+            <div class="list-items-container">
+                <div class="w3-responsive">
+                    <table id="tabellaProposte" class="w3-table-all w3-centered">
+                        <thead>
+                            <tr>
+                                <th>Proposta</th>
+                                <th>Richiesta</th>
+                                <th>Data proposta</th>
+                                <th>Stato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>       
+        </div>
+        
+        <!-- Footer -->
+        <div class="w3-container" id="footer">
+            <div class="w3-center">
+                Contatti: service@webmarket.com 
+            </div>
+        </div>
+        <script src="scripts/proposte.js"></script>
+        <script src="scripts/utilities.js" ></script>     
+    </body>
+</html>

@@ -1,0 +1,26 @@
+{
+    "data": "2025-01-15", //mettere quella di oggi
+    "stato": "Da prendere in carico",   //mettere da prendere in carico
+    "note": "Note richiesta postman",
+    "categoria": "Notebook",
+    "caratteristiche": {
+        "OS": "MacOS",
+        "CPU": "M4",
+        "Schermo": "13,5 pollici",
+        "RAM": "8GB"
+    },
+    "ordinante": {			//obbligatorio
+        "username": "giacomo",
+        "email": "giacomo@gmail.com",
+        "nome": "Giacomo",
+        "cognome": "Calcaterra",
+        "ruolo": "Ordinante"
+    },
+    "tecnico_incarico": {    		//non è obbligatorio
+        "username": "tecnico",
+        "email": "tecnico@gmail.com",
+        "nome": "Tecnico",
+        "cognome": "Principale",
+        "ruolo": "Tecnico"
+    }
+}
